@@ -1,0 +1,18 @@
+div {
+	background-color: #fff;
+	padding-top: 75px;
+	text-align: center;
+}
+
+input {
+	display: block;
+	margin: 0 auto;
+	width: 300px;
+	height: 100px;
+	border-radius: 5px;
+}
+
+input:hover {
+	cursor: pointer;
+}
+
