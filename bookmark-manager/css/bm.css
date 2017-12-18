@@ -1,0 +1,115 @@
+@charset "UTF-8";
+
+.logo-box {
+	padding: 30px;
+	background-color: #fff;
+}
+
+.active {
+	display: block;
+}
+
+.no-active {
+	display: none;
+}
+
+#side-menu {
+	background-color: #c7c7c7;
+	width: 20%;
+	height: 100%;
+	box-sizing: border-box;
+	float: left;
+	padding-top: 25px;
+}
+
+#side-menu a {
+	display: block;
+	padding: 5px 30px;
+	font-size: 14pt;
+}
+
+#side-menu a:hover {
+	background-color: #e3e3e3;
+}
+
+#side-menu .active {
+	background-color: #e3e3e3;
+}
+
+#content {
+	float: left;
+	width: 80%;
+	height: 100%;
+	background-color: #e3e3e3;
+	padding: 25px 0 25px 25px;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+#bookmarks {
+    overflow: hidden;
+}
+
+#bookmarks .bookmark-box {
+	float: left;
+	width: 50%;
+	box-sizing: border-box;
+	padding: 0 25px 5px 0;
+	overflow: hidden;
+}
+
+#bookmarks .edit {
+	float: left;
+	border-right: 5px solid #e3e3e3;
+	text-align: center;
+	padding: 11px;
+}
+
+#bookmarks .link {
+	overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 10px;
+}
+
+#bookmarks .bookmark-box a {
+	background-color: #ededed;
+	display: block;
+	color: #555;
+}
+
+#bookmarks .bookmark-box a:hover {
+	background-color: #c7c7c7;
+}
+
+#add-edit-menu {
+	padding-top: 20px;
+}
+
+#add-edit-menu p {
+	font-size: 14pt;
+}
+
+#add-edit-menu input {
+	color: #555;
+}
+
+#add-edit-menu .txt-field {
+	display: block;
+    padding: 10px;
+    margin: 5px 0;
+    width: 33%;
+}
+
+#add-edit-menu .btn {
+	padding: 10px;
+	background-color: #ededed;
+	margin-right: 1px;
+}
+
+#add-edit-menu .btn:hover {
+	cursor: pointer;
+	background-color: #c7c7c7;
+}
+
+
+
