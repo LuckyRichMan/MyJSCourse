@@ -1,0 +1,163 @@
+@charset "UTF-8";
+
+.logo-box {
+	padding: 30px;
+	background-color: #fff;
+}
+
+.txt-field {
+	display: block;
+    padding: 10px;
+    margin: 5px 0;
+    width: 100%;
+}
+
+.btn {
+	padding: 10px;
+	background-color: #ededed;
+	margin-right: 1px;
+}
+
+.btn:hover {
+	cursor: pointer;
+	background-color: #c7c7c7;
+}
+
+.active {
+	display: block;
+}
+
+.no-active {
+	display: none;
+}
+
+#main-box {
+	display: table;
+	width: 100%;
+	   min-height: 600px;
+}
+
+#side-menu {
+	background-color: #c7c7c7;
+	width: 20%;
+	/*height: 100%;*/
+	box-sizing: border-box;
+	/*float: left;*/
+	padding: 25px 0;
+	display: table-cell;
+	vertical-align: top;
+}
+
+#side-menu .category {
+	display: block;
+	padding: 5px 30px;
+	font-size: 14pt;
+}
+
+#side-menu .category:hover {
+	background-color: #e3e3e3;
+}
+
+#side-menu .btn-box {
+	overflow: hidden;
+	padding: 5px 30px;
+}
+
+#side-menu .edit-category-btn {
+	float: left;
+    margin-right: 10px;
+}
+
+#side-menu .edit-category-btn:hover {
+	color: #555;
+}
+
+#side-menu ul .active {
+	background-color: #e3e3e3;
+}
+
+#side-menu .cat-menu {
+	background-color: #e3e3e3;
+	margin: 10px 30px;
+    font-size: 13pt;
+    padding: 10px 0;
+}
+
+/*#edit-cat-menu .item {
+	display: block;
+	padding: 2.5px 10px;
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #555;
+} 
+
+#edit-cat-menu .item:hover {
+	background-color: #c7c7c7;
+}*/
+
+#content {
+	/*float: left;*/
+	width: 80%;
+	/*height: 100%;*/
+	background-color: #e3e3e3;
+	padding: 25px 0 25px 25px;
+	box-sizing: border-box;
+	/*overflow: hidden;*/
+	display: table-cell;
+}
+
+#bookmarks {
+    overflow: hidden;
+}
+
+#bookmarks .bookmark-box {
+	float: left;
+	width: 50%;
+	box-sizing: border-box;
+	padding: 0 25px 5px 0;
+	overflow: hidden;
+}
+
+#bookmarks .edit {
+	float: left;
+	border-right: 5px solid #e3e3e3;
+	text-align: center;
+	padding: 11px;
+}
+
+#bookmarks .link {
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: lowercase;
+    padding: 10px;
+}
+
+#bookmarks .bookmark-box a {
+	background-color: #ededed;
+	display: block;
+	color: #555;
+}
+
+#bookmarks .bookmark-box a:hover {
+	background-color: #c7c7c7;
+}
+
+#add-edit-bm-menu {
+	padding-top: 20px;
+}
+
+#add-edit-bm-menu p {
+	font-size: 14pt;
+}
+
+#add-edit-bm-menu input {
+	color: #555;
+}
+
+#add-edit-bm-menu .txt-field {
+	width: 33%;
+}
+
+
+

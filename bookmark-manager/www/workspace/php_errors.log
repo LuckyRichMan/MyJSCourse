@@ -1,0 +1,21 @@
+[15-Dec-2017 17:25:22 UTC] PHP Warning:  mysqli_connect(): (HY000/1049): Unknown database 'jobcrm' in /home/ubuntu/workspace/app/dbconnect.php on line 7
+[15-Dec-2017 17:25:22 UTC] PHP Stack trace:
+[15-Dec-2017 17:25:22 UTC] PHP   1. {main}() /home/ubuntu/workspace/app/categories.php:0
+[15-Dec-2017 17:25:22 UTC] PHP   2. include() /home/ubuntu/workspace/app/categories.php:3
+[15-Dec-2017 17:25:22 UTC] PHP   3. include() /home/ubuntu/workspace/app/models/categories.php:3
+[15-Dec-2017 17:25:22 UTC] PHP   4. mysqli_connect() /home/ubuntu/workspace/app/dbconnect.php:7
+[15-Dec-2017 17:26:09 UTC] PHP Fatal error:  Call to undefined function getAllOptions() in /home/ubuntu/workspace/app/categories.php on line 6
+[15-Dec-2017 17:26:09 UTC] PHP Stack trace:
+[15-Dec-2017 17:26:09 UTC] PHP   1. {main}() /home/ubuntu/workspace/app/categories.php:0
+[15-Dec-2017 18:00:24 UTC] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'slaba'@'localhost' (using password: NO) in /home/ubuntu/workspace/app/dbconnect.php on line 7
+[15-Dec-2017 18:00:24 UTC] PHP Stack trace:
+[15-Dec-2017 18:00:24 UTC] PHP   1. {main}() /home/ubuntu/workspace/app/categories.php:0
+[15-Dec-2017 18:00:24 UTC] PHP   2. include() /home/ubuntu/workspace/app/categories.php:4
+[15-Dec-2017 18:00:24 UTC] PHP   3. include() /home/ubuntu/workspace/app/models/categories.php:3
+[15-Dec-2017 18:00:24 UTC] PHP   4. mysqli_connect() /home/ubuntu/workspace/app/dbconnect.php:7
+[17-Dec-2017 21:00:11 UTC] PHP Fatal error:  Call to undefined function editCategory() in /home/ubuntu/workspace/app/categories.php on line 15
+[17-Dec-2017 21:00:11 UTC] PHP Stack trace:
+[17-Dec-2017 21:00:11 UTC] PHP   1. {main}() /home/ubuntu/workspace/app/categories.php:0
+[17-Dec-2017 21:19:22 UTC] PHP Fatal error:  Call to undefined function deleteCategory() in /home/ubuntu/workspace/app/bookmarks.php on line 64
+[17-Dec-2017 21:19:22 UTC] PHP Stack trace:
+[17-Dec-2017 21:19:22 UTC] PHP   1. {main}() /home/ubuntu/workspace/app/bookmarks.php:0

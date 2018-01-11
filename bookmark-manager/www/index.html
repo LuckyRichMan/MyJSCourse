@@ -1,0 +1,75 @@
+<!DOCTYPE>
+ <html>
+  <head>
+   <meta charset="utf-8">
+   <link rel="stylesheet" href="css/bm.css">
+   <link rel="stylesheet" href="css/overall.css">
+   <link rel="stylesheet" href="css/icomoon.css">
+   <base target="_blank">
+   <title>bookmark manager</title>
+  </head>
+
+<body>
+  <div id="header">
+    <div class="logo-box">
+      <h1>bookmark manager</h1>
+    </div>
+  </div>
+
+  <div id="main-box">
+
+    <div id="side-menu">
+      <ul class="categories" type="none">
+      </ul>
+      <div id="add-edit-cat-menu" class="cat-menu no-active">
+        <form>
+          <select class="txt-field select-categories">
+            <option selected value="0">choose category</option>
+          </select>
+          <input id="edit-cat-name" class="txt-field" type="text" placeholder="name">
+          <input id="edit-cat-description" class="txt-field" type="text" placeholder="description">
+          <input id="save-cat-btn" class="btn" type="button" value="Save">
+          <input class="btn cancel-cat-btn" type="button" value="Cancel">
+        </form>
+      </div>
+      <div id="del-cat-menu" class="cat-menu no-active">
+        <select class="txt-field select-categories">
+          <option selected>choose category</option>
+        </select>
+        <input id="del-cat-btn" class="btn" type="button" value="Delete">
+        <input class="btn cancel-cat-btn" type="button" value="Cancel">
+      </div>
+    </div>
+
+    <div id="content">
+      <div id="bookmarks">
+        <div class="bookmark-box">  
+          <a class="edit js-add-bm"><span class="icon-plus"></span></a>
+        </div>
+      </div>
+
+      <div id="add-edit-bm-menu" class="no-active">
+        <form>  
+          <p>Edit bookmark</p>
+          <input id="edit-bookmark-name" class="txt-field" type="text" placeholder="name">
+          <input id="edit-bookmark-url" class="txt-field" type="text" placeholder="url">
+          <input id="edit-bookmark-description" class="txt-field" type="text" placeholder="description">
+          <select class="txt-field select-categories">
+            <option selected value="0">choose category</option>
+          </select>
+          <input id="save-bm-btn" class="btn" type="button" value="Save">
+          <input id="cancel-bm-btn" class="btn" type="button" value="Cancel">
+        </form>
+      <div style="clear: both"></div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+  <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="js/bm.js"></script>
+</body>
+ </html>
