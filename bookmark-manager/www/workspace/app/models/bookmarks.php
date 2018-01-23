@@ -14,7 +14,7 @@ function deleteBookmark(mysqli $db_connect, $id){
 
 //update bookmark
 function updateBookmark(mysqli $db_connect, $params_array){
-    $result=mysqli_query($db_connect,"UPDATE `bookmarks` SET name='".$params_array['name']."', link='".$params_array['link']."', description='".$params_array['description']."' WHERE id='".$params_array['id']."';");
+    $result=mysqli_query($db_connect,"UPDATE `bookmarks` SET name='".$params_array['name']."', link='".$params_array['link']."', description='".$params_array['description']."', categoryid='".$params_array['categoryid']."' WHERE id='".$params_array['id']."';");
 }
 
 //get bookmark by id
