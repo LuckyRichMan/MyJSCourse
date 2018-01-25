@@ -1,15 +1,5 @@
 $(document).ready(function(){
 
-	var categoriesData = [];
-	var bookmarksData = [];
-
-	function getCategoriesData(data) {
-		categoriesData = [];
-		data.categories.forEach(function(item) {
-			categoriesData.push(item);
-		});
-	}
-
 	function addCategoriesOnPage(data) {
 		var $category = $('#side-menu .categories');
 		var overallCategory = '<li><a class="category active" data-id="0">All</a>' + 
@@ -29,29 +19,13 @@ $(document).ready(function(){
 		});
 
 		$category.append(editBtn);
-
 	}
 
 	function addSelectCategories() {
-		categoriesData.forEach(function(category) {
+		categoriesModel.categories.forEach(function(category) {
 			var categoryHTML = '<option value="' + category.id +
 			'">' + category.name + '</option>';
 			$('.select-categories').append(categoryHTML);
-		});
-	}
-
-	function getCategories() {
-		$.get('/workspace/app/categories.php', function(data) {
-			getCategoriesData(data);
-			addCategoriesOnPage(data);
-			addSelectCategories();
-		}, 'json');
-	}
-
-	function getBookmarksData(data) {
-		bookmarksData = [];
-		data.bookmarks.forEach(function(item) {
-			bookmarksData.push(item);
 		});
 	}
 
@@ -61,42 +35,12 @@ $(document).ready(function(){
 		});
 	}
 
-	function getBookmarks() {
-		$.get('/workspace/app/bookmarks.php', function(data) {
-			getBookmarksData(data);
-			addBookmarksOnPage(data);
-		}, 'json');
-	}
-
-	function showEditMenu(selector) {
-		$(selector).removeClass('no-active').addClass('active');
-	}
-
-	function hideEditMenu(selector) {
-		$(selector).removeClass('active').addClass('no-active');
-	}
-
 	function addCategoryOnPage(category) {
 		var categoryHTML = '<li>' +
 				'<a class="category" data-id="' + category.id + '">' + 
 				category.name + '</a>' +
 			'</li>';
 		$('#side-menu .btn-box').before(categoryHTML);
-	}
-
-	function createCategory(newItem) {
-		var data = {
-			action: 'add',
-			name: newItem.name,
-			description: newItem.description
-		}
-		$.post('/workspace/app/categories.php', data, function(res){
-			var category = res.categories[res.categories.length - 1];
-			getCategoriesData(res);
-			addCategoryOnPage(category);
-			refreshSelects(category);
-			//берем последний добавленный элемент на сервере
-		}, 'json');
 	}
 
 	function refreshCategoryList(category) {
@@ -115,7 +59,7 @@ $(document).ready(function(){
 
 	function refreshSelects() {
 		$('.select-categories option').remove();
-		categoriesData.forEach(function(item) {
+		categoriesModel.categories.forEach(function(item) {
 			var newOptionHTML = '<option value="' + item.id + '">' + item.name + '</option>';
 			$('.select-categories').append(newOptionHTML);
 		});
@@ -124,34 +68,6 @@ $(document).ready(function(){
 	function editCategoryOnPage(category) {
 		refreshCategoryList(category);
 		refreshSelects();
-	}
-
-	function editCategory(newItem) {
-		var data = {
-			action: 'edit',
-			id: newItem.id,
-			name: newItem.name,
-			description: newItem.description
-		}
-
-		$.post('/workspace/app/categories.php', data, function(res){
-			var category = res.categories[res.categories.length - 1];
-			getCategoriesData(res);
-			editCategoryOnPage(category);
-		}, 'json');
-	}
-
-	function delCategoryOnServer(categoryId) {
-		var data = {
-			action: 'delete',
-			id: categoryId
-		}
-
-		$.post('/workspace/app/categories.php', data, function(res){
-			getCategoriesData(res);
-			alert('cat deleted');
-			refreshSelects();
-		}, 'json');
 	}
 
 	function delCategoryOnPage(categoryId) {
@@ -164,12 +80,24 @@ $(document).ready(function(){
 		});
 	}
 
-	function delCategory(categoryId) {
-		delCategoryOnServer(categoryId);
-		delCategoryOnPage(categoryId);
+	function delBookmarksOnPage(categoryId) {
+		$('#bookmarks .bookmark-box').each(function() {
+			var $bookmark = $(this);
+			var bookmarkCategoryId = +$bookmark.find('.link').data('categoryid');
+
+			if(categoryId === bookmarkCategoryId) {
+				$bookmark.remove();
+			}
+		});
 	}
 
-	function updateLinkOnPage(newItem, bookmarkId) {
+	function delCategory(categoryId) {
+		categoriesModel.delete(categoryId);
+		delCategoryOnPage(categoryId);
+		delBookmarksOnPage(categoryId);
+	}
+
+	function refreshBookmarkOnPage(newItem, bookmarkId) {
 		$('.link').each(function() {
 			var $bookmark = $(this);
 			var targetLink = $bookmark.data('id');
@@ -183,23 +111,6 @@ $(document).ready(function(){
 		});
 	}
 
-	function changeBookmark(newItem, bookmarkId) {
-		var data = {
-			action: 'edit',
-			id: bookmarkId,
-			name: newItem.name,
-			link: newItem.link,
-			description: newItem.description,
-			categoryid: newItem.categoryid
-		}
-
-		$.post('/workspace/app/bookmarks.php', data, function(res){
-			alert('bm edited'); //тут проверка на добавление закладки на серв
-		}, 'json');
-
-		updateLinkOnPage(newItem, bookmarkId);
-	}
-
 	function addBookmarkOnPage(bookmark) {
 		var bookmarkHTML = '<div class="bookmark-box">' + 
         		'<a class="edit js-del"><span class="icon-bin"></span></a>' +
@@ -210,25 +121,6 @@ $(document).ready(function(){
         		bookmark.name + '</a>' +
       		'</div>';
       	$('#bookmarks .bookmark-box:last').before(bookmarkHTML);
-	}
-
-	function createBookmark(newItem) {
-		var data = {
-			action: 'add',
-			name: newItem.name,
-			link: newItem.link,
-			description: newItem.description,
-			categoryid: newItem.categoryid
-		}
-		$.post('/workspace/app/bookmarks.php', data, function(res){
-			getBookmarksData(res);
-			var bookmark = res.bookmarks[res.bookmarks.length - 1];
-			//берем последний добавленный элемент на сервере
-			alert('bm added'); //тут проверка на добавление закладки на серв
-			
-			addBookmarkOnPage(bookmark);
-		}, 'json');
-
 	}
 
 	function showBookmarks() {
@@ -248,7 +140,7 @@ $(document).ready(function(){
 
 	function setFilter(idCategory) {
 		showBookmarks();
-		if(+idCategory) { //чтобы не скрывались все закладки по клику на all
+		if(+idCategory) { 
 			hideBookmarks(idCategory);
 		}
 	}
@@ -286,16 +178,17 @@ $(document).ready(function(){
 		$('#add-edit-bm-menu .select-categories').val(0);
 	}
 
-	function delBookmark(choosedBookmarkId) {
-		var data = {
-			action: 'delete',
-			id: choosedBookmarkId
+	function deleteBookmark($choosedItem) {
+		var $bookmark = $choosedItem.parents('.bookmark-box');
+		var choosedBookmarkId = $choosedItem.siblings('.link').data('id');
+		var delConfirm = confirm('do you want to delete the bookmark?');
+			
+		if(delConfirm) {
+			bookmarksModel.delete(choosedBookmarkId);
+			$bookmark.remove();//del on page
+		} else {
+			alert('bm is not delete');
 		}
-
-		$.post('/workspace/app/bookmarks.php', data, function(res){
-			alert('bm deleted'); //тут проверка на удаление закладки на сервере
-			getBookmarksData(res);
-		}, 'json');
 	}
 
 	function EditCategoryForm($form) {
@@ -332,9 +225,9 @@ $(document).ready(function(){
 			}
 			if(this.categoryId) {
 				newItem.id = this.categoryId;
-				editCategory(newItem);
+				categoriesModel.edit(newItem);
 			} else {
-				createCategory(newItem);
+				categoriesModel.create(newItem);
 			}
 			this.hide();
 		};
@@ -345,7 +238,7 @@ $(document).ready(function(){
 				this.resetForm();
 				return;
 			}
-			categoriesData.find(function(item) {
+			categoriesModel.categories.find(function(item) {
 				if(+_this.categoryId === +item.id) {
 					_this.$categoryName.val(item.name);
 					_this.$categoryDescription.val(item.description);
@@ -375,13 +268,200 @@ $(document).ready(function(){
 				alert('category is not delete');
 			}
 		};
-
 	}
+
+	function EditBookmarkForm($form) {
+		this.$form = $form;
+		this.bookmarkId = undefined;
+		this.show = function($choosedItem) {
+			var _this = this;
+			var choosedBookmarkData;
+			this.bookmarkId = $choosedItem.siblings('.link').data('id');
+
+			if(this.bookmarkId) {
+				choosedBookmarkData = bookmarksModel.bookmarks
+					.find(function(item) {
+						return +item.id === +_this.bookmarkId;
+					});
+			}
+
+			if(choosedBookmarkData) {
+				addFieldsToEditBm(choosedBookmarkData)
+			} else {
+				clearFields();
+			}
+
+			this.$form.removeClass('no-active').addClass('active');
+		};
+		this.hide = function() {
+			this.$form.removeClass('active').addClass('no-active');
+		};
+		this.save = function() {
+			var newItem = {
+				name: $('#edit-bookmark-name').val(),
+				link: $('#edit-bookmark-url').val(),
+				description: $('#edit-bookmark-description').val(),
+				categoryid: +$('#add-edit-bm-menu .select-categories').val()
+			}
+
+			if( bmHasEmptyFields(newItem) ) {
+				return;
+			}
+
+			if(this.bookmarkId) {
+				bookmarksModel.edit(newItem, this.bookmarkId);
+			} else {
+				bookmarksModel.create(newItem);
+				//createBookmark(newItem);
+			}
+			this.hide();
+		};
+	}
+
+	function CategoriesModel() {
+		this.url = '/workspace/app/categories.php';
+		this.categories = [];
+		this.getAll();
+	}
+
+	CategoriesModel.prototype.getAll = function() {
+		var _this = this;
+		$.get(this.url, function(data) {
+			_this.refresh(data);
+			addCategoriesOnPage(data);
+			addSelectCategories();
+		}, 'json');
+	}
+
+	CategoriesModel.prototype.refresh = function(data) {
+		var _this = this;
+		this.categories = [];
+		data.categories.forEach(function(item) {
+			_this.categories.push(item);
+		});
+	}
+
+	CategoriesModel.prototype.create = function(newItem) {
+		var _this = this;
+		var data = {
+			action: 'add',
+			name: newItem.name,
+			description: newItem.description
+			}
+		$.post(this.url, data, function(res){
+			_this.refresh(res);
+			var category = res.categories[res.categories.length - 1];
+			//берем последний добавленный элемент на сервере
+			addCategoryOnPage(category);
+			refreshSelects(category);
+		}, 'json');
+	}
+
+	CategoriesModel.prototype.edit = function(newItem) {
+		var _this = this;
+		var data = {
+			action: 'edit',
+			id: newItem.id,
+			name: newItem.name,
+			description: newItem.description
+		}
+		$.post(this.url, data, function(res){
+			_this.refresh(res);
+			var category = res.categories[res.categories.length - 1];
+			editCategoryOnPage(category);
+		}, 'json');
+	}
+
+	CategoriesModel.prototype.delete = function(id) {
+		var _this = this;
+		var data = {
+			action: 'delete',
+			id: id
+		}
+		$.post(this.url, data, function(res){
+			_this.refresh(res);
+			alert('category deleted');
+			refreshSelects();
+		}, 'json');
+	}
+
+	function BookmarksModel() {
+		this.url = '/workspace/app/bookmarks.php';
+		this.bookmarks = []
+		this.getAll();
+	}
+
+	BookmarksModel.prototype.refresh = function(data) {
+		var _this = this;
+		this.bookmarks = [];
+		data.bookmarks.forEach(function(item) {
+			_this.bookmarks.push(item);
+		});
+	}
+
+	BookmarksModel.prototype.getAll = function() {
+		var _this = this;
+		$.get(this.url, function(data) {
+			_this.refresh(data);
+			addBookmarksOnPage(data);
+		}, 'json');
+	}
+
+	BookmarksModel.prototype.create = function(newItem) {
+		var _this = this;
+		var data = {
+			action: 'add',
+			name: newItem.name,
+			link: newItem.link,
+			description: newItem.description,
+			categoryid: newItem.categoryid
+		}
+		$.post(this.url, data, function(res){
+			_this.refresh(res);
+			var bookmark = res.bookmarks[res.bookmarks.length - 1];
+			//берем последний добавленный элемент на сервере
+			alert('bm added'); 
+			addBookmarkOnPage(bookmark);
+		}, 'json');
+	}
+
+	BookmarksModel.prototype.edit = function(newItem, id) {
+		var _this = this;
+		var data = {
+			action: 'edit',
+			id: id,
+			name: newItem.name,
+			link: newItem.link,
+			description: newItem.description,
+			categoryid: newItem.categoryid
+		}
+		
+		$.post(this.url, data, function(res){
+			_this.refresh(res);
+			alert('bm edited'); 
+		}, 'json');
+
+		refreshBookmarkOnPage(newItem, id);
+	}
+
+	BookmarksModel.prototype.delete = function(id) {
+		var _this = this;
+		var data = {
+			action: 'delete',
+			id: id
+		}
+		$.post(this.url, data, function(res){
+			alert('bm deleted');
+			_this.refresh(res);
+		}, 'json');
+	}
+
 
 	var editCategoryForm = new EditCategoryForm( $('#add-edit-cat-menu') );
 	var delCategoryForm = new DelCategoryForm( $('#del-cat-menu') );
-	getCategories();
-	getBookmarks();
+	var editBookmarkForm = new EditBookmarkForm( $('#add-edit-bm-menu') );
+	var categoriesModel = new CategoriesModel();
+	var bookmarksModel = new BookmarksModel();
 
 	$(document)
 		//*******CATEGORIES*******
@@ -419,71 +499,21 @@ $(document).ready(function(){
 			editCategoryForm.hide();
 			delCategoryForm.hide();
 		})
+		
 		//*******BOOKMARKS*******
 		.on('click', '.js-edit-bm, .js-add-bm', function() {
 			var $choosedItem = $(this);
-			var choosedBookmarkId = $choosedItem.siblings('.link').data('id');
-			var selector = '#add-edit-bm-menu';
-
-			if(choosedBookmarkId) {
-				var choosedBookmarkData = bookmarksData.find(function(item) {
-					return +item.id === +choosedBookmarkId;
-				});
-			}
-			
-			showEditMenu(selector);
-
-			if(choosedBookmarkData) {
-				$('form').data('id', choosedBookmarkId);
-				addFieldsToEditBm(choosedBookmarkData)
-			} else {
-				$('form').removeData('id');
-				clearFields();
-			}
+			editBookmarkForm.show($choosedItem);
 		})
 		.on('click', '#save-bm-btn', function() {
-			var newItemName = $('#edit-bookmark-name').val();
-			var newItemLink = $('#edit-bookmark-url').val();
-			var newItemDescription = $('#edit-bookmark-description').val();
-			var selector = '#add-edit-bm-menu';
-
-			var newItem = {
-				name: newItemName,
-				link: newItemLink,
-				description: newItemDescription,
-				categoryid: +$('#add-edit-bm-menu .select-categories').val()
-			}
-
-			var bookmarkId = $('form').data('id');
-
-			if(bmHasEmptyFields(newItem)) {
-				return;
-			}
-
-			if(bookmarkId) {
-				changeBookmark(newItem, bookmarkId);
-			} else {
-				createBookmark(newItem);
-			}
-
-			hideEditMenu(selector);
+			editBookmarkForm.save();
 		})
 		.on('click', '#cancel-bm-btn', function() {
-			var selector = '#add-edit-bm-menu';
-			hideEditMenu(selector);
+			editBookmarkForm.hide();
 		})
 		.on('click', '.js-del', function() {
 			var $choosedItem = $(this);
-			var $bookmark = $choosedItem.parents('.bookmark-box');
-			var choosedBookmarkId = $choosedItem.siblings('.link').data('id');
-			var delConfirm = confirm('do you want to delete the bookmark?');
-			
-			if(delConfirm) {
-				delBookmark(choosedBookmarkId);//del on server
-				$bookmark.remove();//del on page
-			} else {
-				alert('bm is not delete');
-			}
+			deleteBookmark($choosedItem);
 		});
 	
 });
